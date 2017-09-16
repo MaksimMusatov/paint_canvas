@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Task</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="filters.css">
+  <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Canvas -->
+  <div class="canvases">
+    <canvas id="canvas-back" width="1100" height="600"></canvas>
+    <canvas id="canvas-front" width="1100" height="600"></canvas>
+  </div>
+  <!-- some tools -->
+  <div class="tools-area">
+    <div>
+      <img src="../img/pencil.png" alt="pencil" id="pencil" class="toolsActive">
+      <img src="../img/eraser.png" alt="eraser" id="eraser">
+      <img src="../img/move.png" alt="move" id="move">
+    </div>
+    <div>
+      <input type="color" id="color" value="#ff4dff">
+      <br>
+      <span> Choose Color</span>
+    </div>
+    <div>
+      <input type="range" id="line-width" value="10" min="1" max="126" step="5">
+      <br>
+      <span>Choose Line Width</span>
+    </div>
+    <div>
+      <p><label>Mouse X : </label><label id="mouseX"> 0 </label></p>
+      <p><label>Mouse Y : </label><label id="mouseY"> 0 </label></p>
+    </div>
+    <div>
+      <input type="button" id="undo" value="Undo">
+    </div>
+    <div>
+      <input type="button" id="redo" value="Redo">
+    </div>
+    <div>
+      <input type="button" id="canvasClear" value="Clear">
+    </div>
+
+    <div>
+      <input type="file" value="Choose Picture" id="file">
+    </div>
+    <div id="prop">
+      <p><span>Image Width : </span><input type="nubmer" id="img-width"></p>
+      <p><span>Image Height : </span><input type="number" id="img-height"></p>
+    </div>
+  </div>
+  <!-- FILTERS -->
+  <div id="filters-container">
+    <div id="normal" class="miniature activeF">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>normal</p>
+      </div>
+      </img>
+    </div>
+    <div id="valencia" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>valencia</p>
+      </div>
+      </img>
+    </div>
+    <div id="walden" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>walden</p>
+      </div>
+      </img>
+    </div>
+    <div id="xpro" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>x-pro</p>
+      </div>
+      </img>
+    </div>
+    <div id="toaster" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>toaster</p>
+      </div>
+      </img>
+    </div>
+    <div id="willow" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>willow</p>
+      </div>
+      </img>
+    </div>
+    <div id="sutro" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>sutro</p>
+      </div>
+      </img>
+    </div>
+    <div id="nashville" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>nashville</p>
+      </div>
+      </img>
+    </div>
+    <div id="kelvin" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>kelvin</p>
+      </div>
+      </img>
+    </div>
+    <div id="brannan" class="miniature">
+      <img alt="imgFilter" src="../img/filter.jpg" class="img-responsive">
+      <div class="caption">
+        <p>brannan</p>
+      </div>
+      </img>
+    </div>
+  </div>
+  <!-- SCRIPTS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="tools.js"></script>
+  <script src="main.js"></script>
+  <script src="undo_redo.js"></script>
+  <script src="filters.js"></script>
+</body>
+
+</html>

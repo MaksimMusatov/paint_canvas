@@ -1,0 +1,78 @@
+/*FILTERS*/
+#filters-container {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  width: 70%;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+.img-responsive {
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+}
+.caption p {
+  text-align: center;
+  text-transform: uppercase;
+  color: #2d2d86;
+  overflow: hidden;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 7px;
+  margin-top: -10px;
+}
+.activeF .caption p {
+  background: #2d2d86;
+  color: white;
+  transition: all .5s;
+}
+.miniature {
+  margin: auto;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.miniature:hover {
+  opacity: 0.85;
+}
+
+#xpro {
+  filter: contrast(1.3)
+    brightness(0.8)
+    sepia(0.3)
+    saturate(1.5)
+    hue-rotate(-20deg);
+}
+#willow {
+  filter: saturate(0.02) contrast(0.85) brightness(1.2) sepia(0.02);
+}
+#valencia {
+  filter: sepia(0.15) saturate(1.5) contrast(0.9);
+}
+#toaster {
+  filter: sepia(0.4) saturate(2.5) hue-rotate(-30deg) contrast(0.67);
+}
+#walden {
+  filter: sepia(0.35)
+    contrast(0.9)
+    brightness(1.1)
+    hue-rotate(-10deg)
+    saturate(1.5);
+}
+#sutro {
+  filter: brightness(0.75) contrast(1.3) sepia(0.5) hue-rotate(-25deg);
+}
+#nashville {
+  filter: sepia(0.4)
+    saturate(1.5)
+    contrast(0.9)
+    brightness(1.1)
+    hue-rotate(-15deg);
+}
+#kelvin {
+  filter: sepia(0.4) saturate(2.4) brightness(1.3) contrast(1);
+}
+#brannan {
+  filter: sepia(0.5) contrast(1.4);
+}

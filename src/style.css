@@ -1,0 +1,80 @@
+body {
+  background-image: url("../img/background1.png");
+  font-family: 'Bitter', serif;
+  margin: 0;
+}
+.canvases {
+  position: absolute;
+  left: 14%;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1100px;
+  height: 600px;
+}
+#canvas-front {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+#canvas-back {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+.tools-area {
+  font-size: 16px;
+  margin-left: 15px;
+  width: 11%;
+  height: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+.tools-area > * {
+  order: 0;
+  flex: 0 1 auto;
+  margin: 3px 2px;
+  padding-top: 3px;
+  align-self: stretch;
+  text-align: center;
+}
+input {
+  cursor: pointer;
+}
+#pencil, #eraser, #move {
+  width: 25%;
+  height: 35px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+.toolsActive {
+  opacity: 0.9;
+  background: #c4ff4d;
+}
+#pencil:hover, #eraser:hover, #move:hover {
+  opacity: 0.9;
+  background: #c4ff4d;
+}
+#prop {
+  display: none;
+}
+#img-width, #img-height {
+  width: 60px;
+  margin: 6px auto;
+}
+#file {
+  width: 115px;
+}
+#canvasClear, #color, #undo, #redo {
+  width: 85%;
+  margin: 5px;
+  border-radius: 7px;
+}
