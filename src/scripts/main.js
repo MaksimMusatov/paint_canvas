@@ -1,7 +1,7 @@
 "use strict";
 import filters from './filters';
 import initUndoRedo from './undo_redo';
-import {PencilTool, EraserTool, ImageMoverTool} from './tools';
+import { PencilTool, EraserTool, ImageMoverTool} from './tools';
 
 
 
@@ -10,9 +10,6 @@ let canvasF = document.getElementById("canvas-front"),
     cxf = canvasF.getContext("2d"),
     cxb = canvasB.getContext("2d"),
     clearCanvas = document.getElementById("canvasClear"),
-    getLineWidth = document.getElementById("line-width"),
-    lineWidth = getLineWidth.value,
-
     // myColor = "#ff4dff",
     fileLoad = document.getElementById("file"),
     prop = document.getElementById("prop"),
@@ -71,23 +68,19 @@ function addAllHandlers(arr, className) {
     }
 }
 
-//------pick line width----///
-getLineWidth.oninput = () => {
-    lineWidth = getLineWidth.value;
-    console.log(lineWidth);
-};
+
 
 //--------drawing----------//
 
 arrTools.pencil.onclick = () => {
     currentTool = pencilTool;
-    canvasF.style.cursor = "url('../img/pencil_cursor.png'), auto";
+    canvasF.style.cursor = "url('../src/img/pencil_cursor.png'), auto";
     console.log('PENCIL');
 };
 
 arrTools.eraser.onclick = () => {
     currentTool = eraserTool;
-    canvasF.style.cursor = "url('../img/eraser_cursor.png'), auto";
+    canvasF.style.cursor = "url('../src/img/eraser_cursor.png'), auto";
     console.log('ERASER');
 };
 arrTools.move.onclick = () => {

@@ -1,14 +1,17 @@
+let color = document.getElementById("color"),
+    getLineWidth = document.getElementById("line-width"),
+    lineWidth = getLineWidth.value;
+
 class DefaultTool {
-
-
     constructor(canvas) {
-
-//-----pick color ----//
-        let color = document.getElementById("color");
-        color.onchange = () => {
-            this.myColor = color.value;
-            console.log(this.myColor);
-        };
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.canvasMousePosition = canvas.getBoundingClientRect();
+        //------pick line width----///
+        getLineWidth.addEventListener('input', () => {
+            this.lineWidth = getLineWidth.value;
+            console.log(this.lineWidth);
+        });
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.processing = false;
@@ -17,7 +20,9 @@ class DefaultTool {
     mousedown() {
     }
 
-    mousemove() {
+    mousemove(e) {
+        this.mouseX = e.clientX - this.canvasMousePosition.left;
+        this.mouseY = e.clientY - this.canvasMousePosition.top;
     }
 
     mouseup() {
@@ -25,22 +30,32 @@ class DefaultTool {
 }
 
 export class PencilTool extends DefaultTool {
+    constructor(canvas) {
+        super(canvas);
+        //-----pick color ----//
+        color.addEventListener('change', () => {
+            this.myColor = color.value;
+            console.log(this.myColor);
+        });
+    }
+
     mousedown() {
         this.processing = true;
         this.ctx.beginPath();
         this.ctx.strokeStyle = this.myColor;
-        this.ctx.lineWidth = lineWidth;
+        this.ctx.lineWidth = this.lineWidth;
         this.ctx.lineCap = "round";
-        this.ctx.moveTo(mouseX, mouseY);
-        this.ctx.lineTo(mouseX, mouseY);
+        this.ctx.moveTo(this.mouseX, this.mouseY);
+        this.ctx.lineTo(this.mouseX, this.mouseY);
         this.ctx.stroke();
         console.log("mousedown pencil");
     }
 
-    mousemove() {
+    mousemove(e) {
+        super.mousemove(e);
         if (this.processing) {
-            this.ctx.lineTo(mouseX, mouseY);
-            this.ctx.moveTo(mouseX, mouseY);
+            this.ctx.lineTo(this.mouseX, this.mouseY);
+            this.ctx.moveTo(this.mouseX, this.mouseY);
             this.ctx.stroke();
             console.log("mousemove pencil");
         }
@@ -58,21 +73,22 @@ export class EraserTool extends DefaultTool {
         this.processing = true;
         this.ctx.beginPath();
         this.ctx.clearRect(
-            mouseX - lineWidth / 2,
-            mouseY - lineWidth / 2,
-            lineWidth,
-            lineWidth
+            this.mouseX - this.lineWidth / 2,
+            this.mouseY - this.lineWidth / 2,
+            this.lineWidth,
+            this.lineWidth
         );
         console.log("mousedown ERASER");
     }
 
-    mousemove() {
+    mousemove(e) {
+        super.mousemove(e);
         if (this.processing) {
             this.ctx.clearRect(
-                mouseX - lineWidth / 2,
-                mouseY - lineWidth / 2,
-                lineWidth,
-                lineWidth
+                this.mouseX - this.lineWidth / 2,
+                this.mouseY - this.lineWidth / 2,
+                this.lineWidth,
+                this.lineWidth
             );
             this.ctx.stroke();
             console.log("mousemove ERASER");
@@ -98,17 +114,16 @@ export class ImageMoverTool extends DefaultTool {
     }
 
     mousemove(event) {
-        let mouseX = event.offsetX;
-        let mouseY = event.offsetY;
+        super.mousemove(event);
 
         if (this.processing) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.putImageData(this.imgData, mouseX - (img.width - mouseX), mouseY - (img.height - mouseY));
+            this.ctx.putImageData(this.imgData, this.mouseX - (img.width - this.mouseX), this.mouseY - (img.height - this.mouseY));
         }
     }
 
     mouseup() {
-        this.ctx.putImageData(this.imgData, mouseX - (img.width - mouseX), mouseY - (img.height - mouseY));
+        this.ctx.putImageData(this.imgData, this.mouseX - (img.width - this.mouseX), this.mouseY - (img.height - this.mouseY));
         this.processing = false;
     }
 }
