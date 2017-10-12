@@ -85,12 +85,6 @@ let canvasF = document.getElementById("canvas-front"),
     cxb = canvasB.getContext("2d"),
     clearCanvas = document.getElementById("canvasClear"),
     // myColor = "#ff4dff",
-    fileLoad = document.getElementById("file"),
-    prop = document.getElementById("prop"),
-    imgWid = document.getElementById("img-width"),
-    imgHei = document.getElementById("img-height"),
-    startX = 0,
-    startY = 0,
     canvasMousePosition,
     mouseX,
     mouseY,
@@ -173,34 +167,7 @@ canvasF.addEventListener("mousedown", event => currentTool.mousedown(event));
 canvasF.addEventListener("mouseup", event => currentTool.mouseup(event));
 canvasF.addEventListener("mousemove", event => currentTool.mousemove(event));
 
-let img;
 
-fileLoad.onchange = () => {
-    let file = fileLoad.files[0];
-    let reader = new FileReader();
-    reader.onload = e => {
-        let dataUri = e.target.result;
-        img = new Image();
-        img.onload = () => {
-            cxf.strokeRect(startX, startY, img.width, img.height);
-            cxf.drawImage(img, startX, startY);
-        };
-        img.src = dataUri;
-        prop.style.display = "block";
-        imgWid.value = img.width;
-        imgHei.value = img.height;
-    };
-    reader.readAsDataURL(file);
-};
-
-imgWid.addEventListener("change", changeSize);
-imgHei.addEventListener("change", changeSize);
-
-function changeSize() {
-    canvasF.width = canvasF.width;
-    cxf.strokeRect(startX, startY, imgWid.value, imgHei.value);
-    cxf.drawImage(img, startX, startY, imgWid.value, imgHei.value);
-}
 
 Object(__WEBPACK_IMPORTED_MODULE_1__undo_redo__["a" /* default */])(canvasF);
 Object(__WEBPACK_IMPORTED_MODULE_0__filters__["a" /* default */])();
@@ -347,9 +314,8 @@ function initUndoRedo(canvasF) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-let color = document.getElementById("color"),
-    getLineWidth = document.getElementById("line-width"),
-    lineWidth = getLineWidth.value;
+let colorPicker = document.getElementById("color"),
+    linePicker = document.getElementById("line-width");
 
 class DefaultTool {
     constructor(canvas) {
@@ -357,8 +323,8 @@ class DefaultTool {
         this.mouseY = 0;
         this.canvasMousePosition = canvas.getBoundingClientRect();
         //------pick line width----///
-        getLineWidth.addEventListener('input', () => {
-            this.lineWidth = getLineWidth.value;
+        linePicker.addEventListener('input', () => {
+            this.lineWidth = linePicker.value;
             console.log(this.lineWidth);
         });
         this.canvas = canvas;
@@ -382,8 +348,8 @@ class PencilTool extends DefaultTool {
     constructor(canvas) {
         super(canvas);
         //-----pick color ----//
-        color.addEventListener('change', () => {
-            this.myColor = color.value;
+        colorPicker.addEventListener('change', () => {
+            this.myColor = colorPicker.value;
             console.log(this.myColor);
         });
     }
@@ -456,6 +422,42 @@ class EraserTool extends DefaultTool {
 
 
 class ImageMoverTool extends DefaultTool {
+    constructor(canvas) {
+        super(canvas);
+        let fileLoad = document.getElementById("file"),
+            imgWid = document.getElementById("img-width"),
+            imgHei = document.getElementById("img-height"),
+            prop = document.getElementById("prop"),
+            startX = 0,
+            startY = 0;
+
+        fileLoad.addEventListener('change', () => {
+            let file = fileLoad.files[0];
+            let reader = new FileReader();
+            reader.addEventListener('load', e => {
+                let dataUri = e.target.result;
+                this.img = new Image();
+                this.img.addEventListener('load', () => {
+                    this.ctx.strokeRect(startX, startY, this.img.width, this.img.height);
+                    this.ctx.drawImage(this.img, startX, startY);
+                });
+                this.img.src = dataUri;
+                prop.style.display = "block";
+                imgWid.value = this.img.width;
+                imgHei.value = this.img.height;
+            });
+            reader.readAsDataURL(file);
+        });
+        imgWid.addEventListener("change", changeSize);
+        imgHei.addEventListener("change", changeSize);
+
+        function changeSize() {
+            this.canvas.width = this.canvas.width;
+            this.ctx.strokeRect(startX, startY, imgWid.value, imgHei.value);
+            this.ctx.drawImage(this.img, startX, startY, imgWid.value, imgHei.value);
+        }
+    }
+
     mousedown() {
         this.processing = true;
         this.imgData = this.ctx.getImageData(
@@ -471,12 +473,12 @@ class ImageMoverTool extends DefaultTool {
 
         if (this.processing) {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.putImageData(this.imgData, this.mouseX - (img.width - this.mouseX), this.mouseY - (img.height - this.mouseY));
+            this.ctx.putImageData(this.imgData, this.mouseX - (this.img.width - this.mouseX), this.mouseY - (this.img.height - this.mouseY));
         }
     }
 
     mouseup() {
-        this.ctx.putImageData(this.imgData, this.mouseX - (img.width - this.mouseX), this.mouseY - (img.height - this.mouseY));
+        this.ctx.putImageData(this.imgData, this.mouseX - (this.img.width - this.mouseX), this.mouseY - (this.img.height - this.mouseY));
         this.processing = false;
     }
 }

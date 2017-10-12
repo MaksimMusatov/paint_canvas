@@ -1,8 +1,9 @@
 "use strict";
 import filters from './filters';
 import initUndoRedo from './undo_redo';
-import { PencilTool, EraserTool, ImageMoverTool} from './tools';
-
+import PencilTool from './tools/pencilTool';
+import EraserTool from './tools/eraserTool';
+import ImageMoverTool from './tools/moverTool';
 
 
 let canvasF = document.getElementById("canvas-front"),
@@ -10,19 +11,44 @@ let canvasF = document.getElementById("canvas-front"),
     cxf = canvasF.getContext("2d"),
     cxb = canvasB.getContext("2d"),
     clearCanvas = document.getElementById("canvasClear"),
-    // myColor = "#ff4dff",
-    fileLoad = document.getElementById("file"),
-    prop = document.getElementById("prop"),
-    imgWid = document.getElementById("img-width"),
-    imgHei = document.getElementById("img-height"),
-    startX = 0,
-    startY = 0,
     canvasMousePosition,
     mouseX,
     mouseY,
     mouseXl = document.getElementById("mouseX"),
     mouseYl = document.getElementById("mouseY"),
     arrTools = [];
+
+let colorPicker = document.getElementById("color"),
+    linePicker = document.getElementById("line-width"),
+    myColor = "#ff4dff";
+
+class DefaultTool {
+    constructor(canvas) {
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.canvasMousePosition = canvas.getBoundingClientRect();
+        //------pick line width----///
+        linePicker.addEventListener('input', () => {
+            this.lineWidth = linePicker.value;
+            console.log(this.lineWidth);
+        });
+        this.canvas = canvas;
+        this.ctx = canvas.getContext("2d");
+        this.processing = false;
+    }
+
+    mousedown() {
+    }
+
+    mousemove(e) {
+        this.mouseX = e.clientX - this.canvasMousePosition.left;
+        this.mouseY = e.clientY - this.canvasMousePosition.top;
+    }
+
+    mouseup() {
+    }
+}
+
 
 //-----------find mouse position----------//
 window.onload = () => {
@@ -69,7 +95,6 @@ function addAllHandlers(arr, className) {
 }
 
 
-
 //--------drawing----------//
 
 arrTools.pencil.onclick = () => {
@@ -99,34 +124,6 @@ canvasF.addEventListener("mousedown", event => currentTool.mousedown(event));
 canvasF.addEventListener("mouseup", event => currentTool.mouseup(event));
 canvasF.addEventListener("mousemove", event => currentTool.mousemove(event));
 
-let img;
-
-fileLoad.onchange = () => {
-    let file = fileLoad.files[0];
-    let reader = new FileReader();
-    reader.onload = e => {
-        let dataUri = e.target.result;
-        img = new Image();
-        img.onload = () => {
-            cxf.strokeRect(startX, startY, img.width, img.height);
-            cxf.drawImage(img, startX, startY);
-        };
-        img.src = dataUri;
-        prop.style.display = "block";
-        imgWid.value = img.width;
-        imgHei.value = img.height;
-    };
-    reader.readAsDataURL(file);
-};
-
-imgWid.addEventListener("change", changeSize);
-imgHei.addEventListener("change", changeSize);
-
-function changeSize() {
-    canvasF.width = canvasF.width;
-    cxf.strokeRect(startX, startY, imgWid.value, imgHei.value);
-    cxf.drawImage(img, startX, startY, imgWid.value, imgHei.value);
-}
 
 initUndoRedo(canvasF);
 filters();
